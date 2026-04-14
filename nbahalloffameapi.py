@@ -13,7 +13,7 @@ response = requests.get(url, headers=headers)
 print(response.json())
 def get_player_stats(player_name, api_key)
 
-user_player = input("Please enter the Name of a NBA Hall of Famer.")
+user_players = input("Please enter the Name of a two NBA Hall of Famers and I will compare them based off their stats.")
 
 
 import random 
