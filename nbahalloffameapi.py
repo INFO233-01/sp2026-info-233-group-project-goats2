@@ -16,6 +16,9 @@ response = requests.get(url, headers=headers, params=querystring)
 print(response.json())
 def get_player_stats(player_name):
 	pass
+try:
+	response=request.get(API_URL, params=("search":name))
+	data=response.json()
 
 user_players = input("Please enter the Name of a two NBA Hall of Famers and I will compare them based off their stats.")
 
