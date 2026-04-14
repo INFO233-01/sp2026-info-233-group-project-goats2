@@ -15,3 +15,5 @@ def get_player_stats(player_name, api_key)
 
 user_player = input("Please enter the Name of a NBA Hall of Famer.")
 
+
+import random 
