@@ -1,14 +1,16 @@
 import requests
 
-url = "https://nbahalloffameapi.p.rapidapi.com/players"
+url = "https://free-nba.p.rapidapi.com/players"
+
+querystring = {"page":"0","per_page":"25"}
 
 headers = {
 	"x-rapidapi-key": "44a02e71e6msh66d308a13d47d14p16def4jsnd48ba5109296",
-	"x-rapidapi-host": "nbahalloffameapi.p.rapidapi.com",
+	"x-rapidapi-host": "free-nba.p.rapidapi.com",
 	"Content-Type": "application/json"
 }
 
-response = requests.get(url, headers=headers)
+response = requests.get(url, headers=headers, params=querystring)
 
 print(response.json())
 def get_player_stats(player_name):
