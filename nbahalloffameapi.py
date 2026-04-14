@@ -11,3 +11,7 @@ headers = {
 response = requests.get(url, headers=headers)
 
 print(response.json())
+
+
+user_player = input("Please enter the Name of a NBA Hall of Famer.")
+
