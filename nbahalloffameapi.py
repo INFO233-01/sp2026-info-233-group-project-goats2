@@ -11,7 +11,7 @@ headers = {
 response = requests.get(url, headers=headers)
 
 print(response.json())
-def get_player_stats(player_name, api_key)
+def get_player_stats(player_name)
 
 user_players = input("Please enter the Name of a two NBA Hall of Famers and I will compare them based off their stats.")
 
