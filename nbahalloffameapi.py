@@ -16,11 +16,4 @@ response = requests.get(
 data = response.json()
 print(f"Player stats for game {game_id}:\n")
 
-# Sort by points and show top performers
-players = sorted(data["data"], key=lambda x: x["pts"], reverse=True)
-for stat in players[:5]:
-    player = stat["player"]
-    team = stat["team"]["abbreviation"]
-    print(f"{player['first_name']} {player['last_name']} ({team}): "
-          f"{stat['pts']} pts, {stat['reb']} reb, {stat['ast']} ast")
 
