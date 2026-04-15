@@ -6,7 +6,6 @@ BASE_URL = "https://api.balldontlie.io"
 headers = {"Authorization": API_KEY}
 
 # Get player stats for a specific game
-game_id = 18447166  # NYK vs ORL game
 response = requests.get(
     f"{BASE_URL}/nba/v1/stats",
     headers=headers,
