@@ -2,7 +2,7 @@ import requests
 from datetime import date
 
 # Your API key
-API_KEY = "c7512eb4-b681-4fe4-81b9-45bd83001e5b"
+API_KEY = "37301324-eadc-444d-bcfd-2cec693ee58a"
 BASE_URL = "https://api.balldontlie.io"
 
 # Set up headers with authentication
