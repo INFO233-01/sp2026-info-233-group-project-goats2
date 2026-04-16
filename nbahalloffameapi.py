@@ -1,6 +1,6 @@
 
-#All this can do is look up a indivuduals players stats, we need to add function to make sure it will only accept strings.
-#Also the part that can compare the players and come to a results off of that.
+#All this can do is look up a indivuduals players stats, we need to add code to make sure it will only accept strings.
+#Also the part that can compare the two players and come to a results off of that.
 #Still needs a second input to meet requirments.
 
 
