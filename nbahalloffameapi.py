@@ -1,60 +1,53 @@
+
+#All this can do is look up a indivuduals players stats, we need to add function to make sure it will only accept strings.
+#Also the part that can compare the players and come to a results off of that.
+#Still needs a second input to meet requirments.
+
+
 import requests
-from datetime import date
+#API pull from balldontlie
+BASE_URL = "https://api.balldontlie.io/v1"
+HEADERS = {"Authorization": "37301324-eadc-444d-bcfd-2cec693ee58a"}
 
-# Your API key
-API_KEY = "37301324-eadc-444d-bcfd-2cec693ee58a"
-BASE_URL = "https://api.balldontlie.io"
-
-# Set up headers with authentication
-headers = {"Authorization": API_KEY}
-
-# Get today's date
-today = date.today().isoformat()
-
-# Fetch today's NBA games
-response = requests.get(
-    f"{BASE_URL}/v1/players",
-    headers=headers,
-)
-
-# Print the results
-data = response.json()
-print(data)
-data = response.json()
-
-for player in data["data"]:
-    print(f"Name: {player['first_name']} {player['last_name']}")
-    print(f"Position: {player['position']}")
-    print(f"Team: {player['team']['full_name']}")
-    print("-" * 30)
-    
-    response = requests.get(
-    f"{BASE_URL}/v1/stats",
-    headers=headers,
-    params={"per_page": 10}
-)
-
-data = response.json()
-
-for stat in data["data"]:
-    player = stat["player"]
-    
-    print(f"{player['first_name']} {player['last_name']}")
-    print(f"Points: {stat['pts']}")
-    print(f"Rebounds: {stat['reb']}")
-    print(f"Assists: {stat['ast']}")
-    print("-" * 30)
-    player_name = input("Enter player name: ").lower()
-
-for stat in data["data"]:
-    player = stat["player"]
-    full_name = f"{player['first_name']} {player['last_name']}".lower()
-    
-    if player_name in full_name:
-        print(f"{full_name.title()}")
-        print(f"Points: {stat['pts']}")
-        print(f"Rebounds: {stat['reb']}")
-        print(f"Assists: {stat['ast']}")
+def get(endpoint, params=None):
+    return requests.get(BASE_URL + endpoint, headers=HEADERS, params=params).json()
+#User enters types what nba player they want to see the stats off
+player_name = input("Player: ")
 
 
+players = get("/players", {"search": player_name})["data"]
 
+if players:
+    player = players[0]
+    print(f"{player['first_name']} {player['last_name']} - {player['team']['full_name']}")
+
+    # Sets all stats to zero so the api can pull the information and add to them accuratly
+    games = points = rebounds = assists = fg_made = fg_attempted = 0
+
+    # Uses range to see all stats from 2018 through 2025 and turns them into averages 
+    for year in range(2018, 2025):
+        result = get("/season_averages", {"player_id": player["id"], "season": year})["data"]
+
+        if result:
+            stats = result[0]
+            g = stats["games_played"]
+
+            games += g
+            points += stats["pts"] * g
+            rebounds += stats["reb"] * g
+            assists += stats["ast"] * g
+            fg_made += stats["fgm"] * g
+            fg_attempted += stats["fga"] * g
+
+    # Print out all the stats 
+    if games and fg_attempted:
+        print(
+            f"PPG: {points/games:.1f} | "
+            f"RPG: {rebounds/games:.1f} | "
+            f"APG: {assists/games:.1f} | "
+            f"FG%: {(fg_made/fg_attempted)*100:.1f}"
+        )
+    else:
+        print("No stats available")
+else:
+    print("No player found")
