@@ -9,24 +9,25 @@ import requests
 BASE_URL = "https://api.balldontlie.io/v1"
 HEADERS = {"Authorization": "37301324-eadc-444d-bcfd-2cec693ee58a"}
 
-def get(endpoint, params=None):
-    return requests.get(BASE_URL + endpoint, headers=HEADERS, params=params).json()
-#User enters types what nba player they want to see the stats off
-player_name = input("Player: ")
+def get_player_stats(player_name):
 
+    players = get("/players", {"search": player_name})["data"]
 
-players = get("/players", {"search": player_name})["data"]
+    if not players:
+        print(f"No player found for {player_name}")
+        return None, None
 
-if players:
     player = players[0]
-    print(f"{player['first_name']} {player['last_name']} - {player['team']['full_name']}")
+    print(f"\n{player['first_name']} {player['last_name']} - {player['team']['full_name']}")
 
-    # Sets all stats to zero so the api can pull the information and add to them accuratly
     games = points = rebounds = assists = fg_made = fg_attempted = 0
 
-    # Uses range to see all stats from 2018 through 2025 and turns them into averages 
+    # loop through seasons
     for year in range(2018, 2025):
-        result = get("/season_averages", {"player_id": player["id"], "season": year})["data"]
+        result = get("/season_averages", {
+            "player_ids[]": player["id"],
+            "season": year
+        })["data"]
 
         if result:
             stats = result[0]
@@ -39,15 +40,23 @@ if players:
             fg_made += stats["fgm"] * g
             fg_attempted += stats["fga"] * g
 
-    # Print out all the stats 
     if games and fg_attempted:
+        stats_dict = {
+            "ppg": round(points / games, 1),
+            "rpg": round(rebounds / games, 1),
+            "apg": round(assists / games, 1),
+            "fg_pct": round((fg_made / fg_attempted) * 100, 1)
+        }
+
         print(
-            f"PPG: {points/games:.1f} | "
-            f"RPG: {rebounds/games:.1f} | "
-            f"APG: {assists/games:.1f} | "
-            f"FG%: {(fg_made/fg_attempted)*100:.1f}"
+            f"PPG: {stats_dict['ppg']} | "
+            f"RPG: {stats_dict['rpg']} | "
+            f"APG: {stats_dict['apg']} | "
+            f"FG%: {stats_dict['fg_pct']}"
         )
-    else:
-        print("No stats available")
-else:
-    print("No player found")
+
+        return player_name, stats_dict
+
+    else
+
+       
