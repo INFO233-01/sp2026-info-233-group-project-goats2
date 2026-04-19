@@ -57,6 +57,8 @@ def get_player_stats(player_name):
 
         return player_name, stats_dict
 
-    else
+    else:
+        print("No statitics available")
+        return None,None 
 
        
