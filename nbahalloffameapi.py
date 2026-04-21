@@ -94,12 +94,14 @@ def compare_players(p1, p2):
     # Decide the winner
     print("\n--- Result ---")
     if score1 > score2:
+        print(json_image["image"][0]["source"][0]["url"])
         print(f"{p1['name']} would win based on stats")
         response_image = requests.get(f"https://4get.lunar.icu/api/v1/images?s={p1}", headers=headers)
         json_image = response_image.json()
         url_image = json_image["image"][0]["source"][0]["url"]
         webbrowser.open(url_image)
     elif score2 > score1:
+        print(json_image["image"][0]["source"][0]["url"])
         print(f"{p2['name']} would win based on stats")
         response_image = requests.get(f"https://4get.lunar.icu/api/v1/images?s={p2}", headers=headers)
         json_image = response_image.json()
