@@ -3,27 +3,26 @@
 #Also the part that can compare the two players and come to a results off of that.
 #Still needs a second input to meet requirments.
 
-
 import requests
-#API pull from balldont lie
+
 BASE_URL = "https://api.balldontlie.io/v1"
 HEADERS = {"Authorization": "37301324-eadc-444d-bcfd-2cec693ee58a"}
 
 def get(endpoint, params=None):
     return requests.get(BASE_URL + endpoint, headers=HEADERS, params=params).json()
-#User enters types what player they want to see
 
 
-players = get("/players", {"search": player_name})["data"]
+# Function to get player stats using get player stats
+def get_player_stats(player_name):
+    players = get("/players", {"search": player_name})["data"]
 
-if players:
+    if not players:
+        return None
+
     player = players[0]
-    print(f"{player['first_name']} {player['last_name']} - {player['team']['full_name']}")
 
-    # Sets all stats to zero so the api can add to them accuratly
     games = points = rebounds = assists = fg_made = fg_attempted = 0
 
-    # Uses range to see all stats from 2018 through 2025 and turns them into averages
     for year in range(2018, 2025):
         result = get("/season_averages", {"player_id": player["id"], "season": year})["data"]
 
@@ -38,15 +37,73 @@ if players:
             fg_made += stats["fgm"] * g
             fg_attempted += stats["fga"] * g
 
-    # Print out all the stats 
     if games and fg_attempted:
-        print(
-            f"PPG: {points/games:.1f} | "
-            f"RPG: {rebounds/games:.1f} | "
-            f"APG: {assists/games:.1f} | "
-            f"FG%: {(fg_made/fg_attempted)*100:.1f}"
-        )
+        return {
+            "name": f"{player['first_name']} {player['last_name']}",
+            "team": player["team"]["full_name"],
+            "ppg": points / games,
+            "rpg": rebounds / games,
+            "apg": assists / games,
+            "fg": (fg_made / fg_attempted) * 100
+        }
     else:
-        print("No stats available")
+        return None
+
+
+# Function to compare players
+def compare_players(p1, p2):
+    score1 = 0
+    score2 = 0
+
+    print("\n--- Comparison ---")
+
+    # Compare each stat
+    if p1["ppg"] > p2["ppg"]:
+        score1 += 1
+    else:
+        score2 += 1
+
+    if p1["rpg"] > p2["rpg"]:
+        score1 += 1
+    else:
+        score2 += 1
+
+    if p1["apg"] > p2["apg"]:
+        score1 += 1
+    else:
+        score2 += 1
+
+    if p1["fg"] > p2["fg"]:
+        score1 += 1
+    else:
+        score2 += 1
+
+    # Print player stats
+    print(f"\n{p1['name']} ({p1['team']})")
+    print(f"PPG: {p1['ppg']:.1f} | RPG: {p1['rpg']:.1f} | APG: {p1['apg']:.1f} | FG%: {p1['fg']:.1f}")
+
+    print(f"\n{p2['name']} ({p2['team']})")
+    print(f"PPG: {p2['ppg']:.1f} | RPG: {p2['rpg']:.1f} | APG: {p2['apg']:.1f} | FG%: {p2['fg']:.1f}")
+
+    # Decide the winner
+    print("\n--- Result ---")
+    if score1 > score2:
+        print(f"{p1['name']} would win based on stats")
+    elif score2 > score1:
+        print(f"{p2['name']} would win based on stats")
+    else:
+        print("It's a tie!")
+
+
+#  Main code for comparison 
+player1_name = input("Enter Player 1: ")
+player2_name = input("Enter Player 2: ")
+
+p1 = get_player_stats(player1_name)
+p2 = get_player_stats(player2_name)
+
+if p1 and p2:
+    compare_players(p1, p2)
 else:
-    print("No player found")
+    print("One or both players not found.")
+
