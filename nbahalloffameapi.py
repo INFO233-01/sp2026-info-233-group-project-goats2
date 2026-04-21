@@ -4,6 +4,12 @@
 #Still needs a second input to meet requirments.
 
 import requests
+import webbrowser
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/120.0.0.0',
+}
+
 
 BASE_URL = "https://api.balldontlie.io/v1"
 HEADERS = {"Authorization": "37301324-eadc-444d-bcfd-2cec693ee58a"}
@@ -89,8 +95,16 @@ def compare_players(p1, p2):
     print("\n--- Result ---")
     if score1 > score2:
         print(f"{p1['name']} would win based on stats")
+        response_image = requests.get(f"https://4get.lunar.icu/api/v1/images?s={p1}", headers=headers)
+        json_image = response_image.json()
+        url_image = json_image["image"][0]["source"][0]["url"]
+        webbrowser.open(url_image)
     elif score2 > score1:
         print(f"{p2['name']} would win based on stats")
+        response_image = requests.get(f"https://4get.lunar.icu/api/v1/images?s={p2}", headers=headers)
+        json_image = response_image.json()
+        url_image = json_image["image"][0]["source"][0]["url"]
+        webbrowser.open(url_image)
     else:
         print("It's a tie!")
 
