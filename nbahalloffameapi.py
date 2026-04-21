@@ -126,4 +126,23 @@ if p1 and p2:
     compare_players(p1, p2)
 else:
     print("One or both players not found.")
+#loop to continue or quit
+while True:
+    player1_name= input("Enter Player 1 or 'q' to quit: ")
+    
+    if player1_name.lower()== "q":
+        print("You have quit the game.")
+        break
+    player2_name + input("Enter player 2 or 'q' to quit:")
+    
+    if player2_name.lower()== "q":
+        print("You have quit the game.")
+        break
+    p1 = get_player_stats(player1_name)
+    p2 = get_player_stats(player2_name)
+
+    if p1 and p2:
+        compare_players(p1, p2)
+    else:
+        print("One or both players not found.")
 
