@@ -11,8 +11,7 @@ HEADERS = {"Authorization": "37301324-eadc-444d-bcfd-2cec693ee58a"}
 
 def get(endpoint, params=None):
     return requests.get(BASE_URL + endpoint, headers=HEADERS, params=params).json()
-#User enters types what player they want to see 
-player_name = input("Player: ")
+#User enters types what player they want to see
 
 
 players = get("/players", {"search": player_name})["data"]
