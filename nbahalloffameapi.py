@@ -1,7 +1,5 @@
-
-#All this can do is look up a indivuduals players stats, we need to add code to make sure it will only accept strings.
-#Also the part that can compare the two players and come to a results off of that.
-#Still needs a second input to meet requirments.
+print("Please enter the names of two active NBA Players from 2018-2025, the computer will then display their stats and compare them against each other. Afterwards a image of the winner will display.")
+print("When your done with the progam enter the letter q in the player one input to end the code")
 
 import requests
 import webbrowser
@@ -128,18 +126,16 @@ else:
     print("One or both players not found.")
 #loop to continue or quit
 while True:
-    player1_name = input("Enter Player 1 or 'q' to quit: ").strip()
-
-    if player1_name.lower() == "q":
+    player1_name= input("Enter Player 1 or 'q' to quit: ")
+    player2_name= input("Enter Player 2 or'q' to quit: ")
+    
+    if player1_name.lower()== "q":
         print("You have quit the game.")
         break
-
-    player2_name = input("Enter Player 2 or 'q' to quit: ").strip()
-
-    if player2_name.lower() == "q":
+    
+    if player2_name.lower()== "q":
         print("You have quit the game.")
         break
-
     p1 = get_player_stats(player1_name)
     p2 = get_player_stats(player2_name)
 
